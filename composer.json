@@ -1,0 +1,17 @@
+{
+    "name": "hexlet/code",
+    "description": "project2",
+    "license": "proprietary",
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Vladimir Ugarov",
+            "email": "graciadan@rambler.ru"
+        }
+    ],
+    "require": {}
+}
