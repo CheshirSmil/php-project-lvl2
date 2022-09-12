@@ -13,5 +13,7 @@
             "email": "graciadan@rambler.ru"
         }
     ],
-    "require": {}
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
 }
