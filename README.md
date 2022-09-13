@@ -8,3 +8,7 @@
 ### Сравнение плоских файлов _json_:
 
 [![asciicast](https://asciinema.org/a/520479.svg)](https://asciinema.org/a/520479)
+
+### Сравнение плоских файлов _yaml/yml_:
+
+[![asciicast](https://asciinema.org/a/520869.svg)](https://asciinema.org/a/520869)
