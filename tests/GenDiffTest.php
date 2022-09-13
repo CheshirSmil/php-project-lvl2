@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use function Differ\Parsers\parse;
 use function Differ\Differ\genDiff;
 
-class DifferTest extends TestCase
+class GenDiffTest extends TestCase
 {
     protected $files;
     protected $result;
@@ -20,7 +20,7 @@ class DifferTest extends TestCase
             'yaml1' => 'tests/fixtures/file1.yaml',
             'yaml2' => 'tests/fixtures/file2.yml'
         ];
-        $this->result = file_get_contents('tests/fixtures/result');
+        $this->result = file_get_contents('tests/fixtures/sample');
     }
 
     public function testParse()
