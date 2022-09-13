@@ -3,6 +3,8 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/ae74513610ee0ddec792/maintainability)](https://codeclimate.com/github/CheshirSmil/php-project-lvl2/maintainability)
 
+[![Test Coverage](https://api.codeclimate.com/v1/badges/ae74513610ee0ddec792/test_coverage)](https://codeclimate.com/github/CheshirSmil/php-project-lvl2/test_coverage)
+
 ### Сравнение плоских файлов _json_:
 
 [![asciicast](https://asciinema.org/a/520479.svg)](https://asciinema.org/a/520479)
