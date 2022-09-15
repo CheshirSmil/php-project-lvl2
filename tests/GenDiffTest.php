@@ -10,7 +10,6 @@ use function Differ\Differ\genDiff;
 class GenDiffTest extends TestCase
 {
     protected $files;
-    protected $result;
 
     protected function setUp(): void
     {
@@ -20,16 +19,35 @@ class GenDiffTest extends TestCase
             'yaml1' => 'tests/fixtures/file1.yaml',
             'yaml2' => 'tests/fixtures/file2.yml'
         ];
-        $this->result = file_get_contents('tests/fixtures/sample');
     }
 
     public function testParse()
     {
         $expected = (object) [
-            "host" => "hexlet.io",
-            "timeout" => 50,
-            "proxy" => "123.234.53.22",
-            "follow" => false
+            "common" => (object) [
+                "setting1" => "Value 1",
+                "setting2" => 200,
+                "setting3" => true,
+                "setting6" => (object) [
+                    "key" => "value",
+                    "doge" => (object) [
+                        "wow" => ""
+                    ]
+                ]
+            ],
+            "group1" => (object) [
+                "baz" => "bas",
+                "foo" => "bar",
+                "nest" => (object) [
+                    "key" => "value"
+                ]
+            ],
+            "group2" => (object) [
+                "abc" => 12345,
+                "deep" => (object) [
+                    "id" => 45
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, parse($this->files['json1']));
@@ -38,7 +56,7 @@ class GenDiffTest extends TestCase
 
     public function testGenDiff()
     {
-        $expected = $this->result;
+        $expected = file_get_contents('tests/fixtures/stylish.txt');
 
         $this->assertEquals($expected, genDiff($this->files['json1'], $this->files['json2']));
         $this->assertEquals($expected, genDiff($this->files['yaml1'], $this->files['yaml2']));
