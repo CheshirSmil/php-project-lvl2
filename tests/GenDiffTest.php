@@ -56,9 +56,10 @@ class GenDiffTest extends TestCase
 
     public function testGenDiff()
     {
-        $expected = file_get_contents('tests/fixtures/stylish.txt');
+        $expected1 = file_get_contents('tests/fixtures/stylish.txt');
+        $expected2 = file_get_contents('tests/fixtures/plain.txt');
 
-        $this->assertEquals($expected, genDiff($this->files['json1'], $this->files['json2']));
-        $this->assertEquals($expected, genDiff($this->files['yaml1'], $this->files['yaml2']));
+        $this->assertEquals($expected1, genDiff($this->files['json1'], $this->files['json2']));
+        $this->assertEquals($expected2, genDiff($this->files['yaml1'], $this->files['yaml2'], 'plain'));
     }
 }

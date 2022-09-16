@@ -3,72 +3,79 @@
 namespace Differ\Differ;
 
 use function Differ\Parsers\parse;
-use function Differ\Formatters\stylish;
+use function Differ\Formatters\format;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
 {
     $obj1 = parse($pathToFile1);
     $obj2 = parse($pathToFile2);
 
-    if ($format === 'stylish') {
-        return stylish(iter($obj1, $obj2));
-    }
+    return format(makeDiffData($obj1, $obj2), $format) . PHP_EOL;
 }
 
-function iter(object $obj1, object $obj2)
+function makeDiffData(object $obj1, object $obj2): array
 {
     $keys1 = array_keys(get_object_vars($obj1));
     $keys2 = array_keys(get_object_vars($obj2));
     $keys =  array_unique(array_merge($keys1, $keys2));
     sort($keys);
 
-    return array_reduce(
-        $keys,
-        function ($carry, $key) use ($obj1, $obj2) {
-            if (!property_exists($obj1, $key)) {
-                $value = makeValue($obj2->$key);
-                $opt = 'added';
-                $carry[] = makeNode($key, $value, $opt);
-                return $carry;
-            }
-            if (!property_exists($obj2, $key)) {
-                $value = makeValue($obj1->$key);
-                $opt = 'deleted';
-                $carry[] = makeNode($key, $value, $opt);
-                return $carry;
-            }
-            if ($obj1->$key === $obj2->$key) {
-                $value = makeValue($obj1->$key);
-                $carry[] = makeNode($key, $value);
-                return $carry;
-            } elseif (is_object($obj1->$key) && is_object($obj2->$key)) {
-                $value = iter($obj1->$key, $obj2->$key);
-                $carry[] = makeNode($key, $value);
-                return $carry;
-            } else {
-                $value1 = makeValue($obj1->$key);
-                $value2 = makeValue($obj2->$key);
-                $opt1 = 'deleted';
-                $opt2 = 'added';
-                $carry[] = makeNode($key, $value1, $opt1);
-                $carry[] = makeNode($key, $value2, $opt2);
-                return $carry;
-            }
-        },
-        []
+    $result = array_map(
+        fn ($key) => makeDiffNode($key, $obj1, $obj2),
+        $keys
     );
+
+    return $result;
 }
 
-function makeNode($name, $value, $opt = null)
+function makeDiffNode(string $name, $expeted, $current): array
 {
-    return $opt ? compact('opt', 'name', 'value') : compact('name', 'value');
+    $node = compact('name');
+    //add
+    if (!property_exists($expeted, $name)) {
+        $node['currentValue'] = makeNode($current->$name);
+        return $node;
+    }
+    //delete
+    if (!property_exists($current, $name)) {
+        $node['expectedValue'] = makeNode($expeted->$name);
+        return $node;
+    }
+    //same
+    if (is_object($expeted->$name) && is_object($current->$name)) {
+        $node['children'] = makeDiffData($expeted->$name, $current->$name);
+        return $node;
+    } elseif ($expeted->$name === $current->$name) {
+        $node['value'] = makeNode($current->$name);
+        return $node;
+    }
+    //update
+    $node['currentValue'] = makeNode($current->$name);
+    $node['expectedValue'] = makeNode($expeted->$name);
+
+    return $node;
 }
 
-function makeValue($data)
+function makeNode($data)
 {
     if (!is_object($data)) {
         return $data;
     }
 
-    return iter($data, $data);
+    $keys = array_keys(get_object_vars($data));
+    sort($keys);
+
+    $result = array_map(
+        fn ($key) => is_object($data->$key) ?
+            [
+                'name' => $key,
+                'children' => makeNode($data->$key)
+            ] :
+            [
+                'name' => $key,
+                'value' => makeNode($data->$key)
+            ],
+        $keys
+    );
+    return $result;
 }
