@@ -16,3 +16,11 @@
 ### Рукурсивное сравнение файлов _json_ или _yaml/yml_ в формате stylish:
 
 [![asciicast](https://asciinema.org/a/521589.svg)](https://asciinema.org/a/521589)
+
+### Рукурсивное сравнение файлов _json_ или _yaml/yml_ в формате plain:
+
+[![asciicast](https://asciinema.org/a/521969.svg)](https://asciinema.org/a/521969)
+
+### Рукурсивное сравнение файлов _json_ или _yaml/yml_ в формате json:
+
+[![asciicast](https://asciinema.org/a/521975.svg)](https://asciinema.org/a/521975)

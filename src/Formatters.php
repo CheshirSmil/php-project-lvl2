@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters;
 
-use function Differ\Formatters\{plain, stylish};
+use function Differ\Formatters\{plain, stylish, json};
 
 function format(array $data, string $format): string
 {
@@ -11,6 +11,8 @@ function format(array $data, string $format): string
             return stylish($data);
         case 'plain':
             return plain($data);
+        case 'json':
+            return  json($data);
         default:
             throw new \Exception("Unknown format");
     }
