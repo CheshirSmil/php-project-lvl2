@@ -56,7 +56,7 @@ function toString(array $data): string
 {
     $value = $data[0];
     $string = json_encode($value);
-    if ($string == false) {
+    if ($string === false) {
         throw new \Exception("Unknown format");
     }
     return trim($string, '"');
