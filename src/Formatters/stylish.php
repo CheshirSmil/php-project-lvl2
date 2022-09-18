@@ -4,12 +4,8 @@ namespace Differ\Formatters;
 
 const TAB = "    ";
 
-function stylish($data, int $depth = 0): string
+function stylish(array $data, int $depth = 0): string
 {
-    if (!is_array($data)) {
-        return toString($data);
-    }
-
     $lines = array_map(
         fn ($item) => makeLine($item, $depth),
         $data
@@ -32,7 +28,13 @@ function makeLine(array $node, int $depth = 0): string
     );
 
     $lines = array_map(
-        fn ($type) => $indent . getPrefix($type) . $key . ": " . stylish($node[$type], $depth + 1),
+        function ($type) use ($key, $indent, $node, $depth) {
+            $currentNode = $node[$type];
+            if (is_array($currentNode)) {
+                return $indent . getPrefix($type) . $key . ": " . stylish($currentNode, $depth + 1);
+            }
+            return $indent . getPrefix($type) . $key . ": " . toString([$currentNode]);
+        },
         $currentTypes
     );
 
@@ -50,7 +52,12 @@ function getPrefix(string $type): string
     return TAB;
 }
 
-function toString($value): string
+function toString(array $data): string
 {
-    return trim(json_encode($value), '"');
+    $value = $data[0];
+    $string = json_encode($value);
+    if ($string == false) {
+        throw new \Exception("Unknown format");
+    }
+    return trim($string, '"');
 }
