@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters;
 
-function plain(array $data, $path = []): string
+function plain(array $data, string $path = ''): string
 {
     $result = array_map(
         fn ($node) => makePlainLine($node, $path),
@@ -12,11 +12,9 @@ function plain(array $data, $path = []): string
     return implode(PHP_EOL, array_filter($result));
 }
 
-function makePlainLine(array $node, $path): string
+function makePlainLine(array $node, string $keys): string
 {
-    if (array_key_exists('name', $node)) {
-        $path[] = $node['name'];
-    }
+    $path = $keys === '' ? $node ['name'] : "{$keys}.{$node['name']}";
 
     $types = ['children', 'expectedValue', 'currentValue'];
 
@@ -33,27 +31,32 @@ function makePlainLine(array $node, $path): string
             return plain($node['children'], $path);
         case 'expectedValue':
             $message = "was removed";
-            return makeString($path, $message);
+            break;
         case 'currentValue':
-            $value = getValue($node['currentValue']);
+            $value = getValue([$node['currentValue']]);
             $message = "was added with value: {$value}";
-            return makeString($path, $message);
+            break;
         case 'expectedValue currentValue':
-            $value1 = getValue($node['expectedValue']);
-            $value2 = getValue($node['currentValue']);
+            $value1 = getValue([$node['expectedValue']]);
+            $value2 = getValue([$node['currentValue']]);
             $message = "was updated. From {$value1} to {$value2}";
-            return makeString($path, $message);
+            break;
+        default:
+            return '';
     }
-    return '';
+    return "Property '{$path}' {$message}";
 }
 
-function makeString(array $path, string $message): string
+function getValue(array $data): string
 {
-    $property = implode('.', $path);
-    return "Property '{$property}' {$message}";
-}
+    if (is_array($data[0])) {
+        return '[complex value]';
+    }
 
-function getValue($data): string
-{
-    return (is_array($data)) ? '[complex value]' : str_replace('"', "'", (json_encode($data)));
+    $string = json_encode($data[0]);
+    if ($string === false) {
+        throw new \Exception("Unknown format");
+    }
+
+    return str_replace('"', "'", $string);
 }
