@@ -10,7 +10,7 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     $obj1 = parse($pathToFile1);
     $obj2 = parse($pathToFile2);
 
-    return format(makeDiffData($obj1, $obj2), $format) . PHP_EOL;
+    return format(makeDiffData($obj1, $obj2), $format);
 }
 
 function makeDiffData(object $obj1, object $obj2): array

@@ -32,7 +32,7 @@ function makeLine(array $node, int $depth = 0): string
     );
 
     $lines = array_map(
-        fn ($type) => $indent . getPrefix($type) . trim($key . ": " . stylish($node[$type], $depth + 1)),
+        fn ($type) => $indent . getPrefix($type) . $key . ": " . stylish($node[$type], $depth + 1),
         $currentTypes
     );
 

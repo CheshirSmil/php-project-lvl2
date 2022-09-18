@@ -15,6 +15,7 @@ if (file_exists($autoloadPath1)) {
 
 $doc = <<<DOC
 Generate diff
+
 Usage:
   gendiff (-h|--help)
   gendiff (-v|--version)
@@ -34,4 +35,4 @@ $formatName = $args["--format"];
 
 $diff = genDiff($pathToFile1, $pathToFile2, $formatName);
 
-print_r($diff);
+print_r($diff . PHP_EOL);
