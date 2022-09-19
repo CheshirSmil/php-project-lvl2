@@ -21,6 +21,5 @@ function parse(string $path): object
             return Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
         default:
             throw new \Exception("Unknown file type {$type}");
-
     }
 }
