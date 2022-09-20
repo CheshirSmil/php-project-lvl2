@@ -8,7 +8,7 @@
 [![CI](https://github.com/CheshirSmil/php-project-lvl2/actions/workflows/lint.yml/badge.svg)](https://github.com/CheshirSmil/php-project-lvl2/actions/workflows/lint.yml)
 
 ## Описание проекта
-В данном проектк нужно создать утилиту для поиска отличий в файлах.
+В данном проекте нужно создать утилиту для поиска отличий в файлах.
 
 ### Возможности утилиты:
 * Поддержка форматов: json, yaml
