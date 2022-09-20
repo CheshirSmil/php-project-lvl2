@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1663690548">
-  <project timestamp="1663690548">
+<coverage generated="1663691534">
+  <project timestamp="1663691534">
     <file name="/home/dragon/php-project-lvl2/src/Differ.php">
       <line num="11" type="stmt" count="1"/>
       <line num="12" type="stmt" count="1"/>

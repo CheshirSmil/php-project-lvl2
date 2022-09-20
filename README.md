@@ -5,9 +5,22 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ae74513610ee0ddec792/test_coverage)](https://codeclimate.com/github/CheshirSmil/php-project-lvl2/test_coverage)
 
+[![CI](https://github.com/CheshirSmil/php-project-lvl2/actions/workflows/lint.yml/badge.svg)](https://github.com/CheshirSmil/php-project-lvl2/actions/workflows/lint.yml)
+
+## Описание проекта
+В данном проектк нужно создать утилиту для поиска отличий в файлах.
+
+### Возможности утилиты:
+* Поддержка форматов: json, yaml
+* Генерация отчетов: stylish, plain, json
+
 ## Требования:
 
-Необходимо наличие на компьютере ОС Linux и PHP не ниже 7 версии.
+Необходимо наличие на компьютере ОС Linux и PHP не ниже 7 версии, Composer
+
+## Установка:
+
+Для установки используется Makefile с командой make install , выполняющий команду composer install.
 
 ### Сравнение плоских файлов _json_:
 
