@@ -11,10 +11,10 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     $obj1 = parse($pathToFile1);
     $obj2 = parse($pathToFile2);
 
-    return format(makeDiffData($obj1, $obj2), $format);
+    return format(makeDiff($obj1, $obj2), $format);
 }
 
-function makeDiffData(object $obj1, object $obj2): array
+function makeDiff(object $obj1, object $obj2): array
 {
     $keys1 = array_keys(get_object_vars($obj1));
     $keys2 = array_keys(get_object_vars($obj2));
@@ -42,7 +42,7 @@ function makeDiffNode(string $name, object $expeted, object $current): array
     }
     //same
     if (is_object($expeted->$name) && is_object($current->$name)) {
-        $children = makeDiffData($expeted->$name, $current->$name);
+        $children = makeDiff($expeted->$name, $current->$name);
         $result = compact('name', 'children');
     } elseif ($expeted->$name === $current->$name) {
         $value = makeNode([$current->$name]);
