@@ -15,28 +15,19 @@ function plain(array $data, string $path = ''): string
 function makePlainLine(array $node, string $keys): string
 {
     $path = $keys === '' ? $node ['name'] : "{$keys}.{$node['name']}";
-
-    $types = ['children', 'expectedValue', 'currentValue'];
-
-    $currentTypes = array_filter(
-        $types,
-        fn ($type) =>
-        array_key_exists($type, $node)
-    );
-
-    $type = implode(' ', $currentTypes);
+    $type = $node['type'] ?? '';
 
     switch ($type) {
-        case 'children':
+        case 'object':
             return plain($node['children'], $path);
-        case 'expectedValue':
+        case 'deleted':
             $message = "was removed";
             break;
-        case 'currentValue':
+        case 'added':
             $value = getValue([$node['currentValue']]);
             $message = "was added with value: {$value}";
             break;
-        case 'expectedValue currentValue':
+        case 'updated':
             $value1 = getValue([$node['expectedValue']]);
             $value2 = getValue([$node['currentValue']]);
             $message = "was updated. From {$value1} to {$value2}";

@@ -20,38 +20,41 @@ function makeDiff(object $obj1, object $obj2): array
     $keys2 = array_keys(get_object_vars($obj2));
     $keys =  sortArrayValues(array_unique(array_merge($keys1, $keys2)));
 
-    $result = array_map(
+    return  array_map(
         fn ($key) => makeDiffNode($key, $obj1, $obj2),
         $keys
     );
-
-    return $result;
 }
 
-function makeDiffNode(string $name, object $expeted, object $current): array
+function makeDiffNode(string $name, object $expected, object $current): array
 {
     //add
-    if (!property_exists($expeted, $name)) {
+    if (!property_exists($expected, $name)) {
         $currentValue = makeNode([$current->$name]);
-        return compact('name', 'currentValue');
+        $type = 'added';
+        return compact('name', 'currentValue', 'type');
     }
     //delete
     if (!property_exists($current, $name)) {
-        $expectedValue = makeNode([$expeted->$name]);
-        return compact('name', 'expectedValue');
+        $expectedValue = makeNode([$expected->$name]);
+        $type = 'deleted';
+        return compact('name', 'expectedValue', 'type');
     }
     //same
-    if (is_object($expeted->$name) && is_object($current->$name)) {
-        $children = makeDiff($expeted->$name, $current->$name);
-        $result = compact('name', 'children');
-    } elseif ($expeted->$name === $current->$name) {
+    if (is_object($expected->$name) && is_object($current->$name)) {
+        $children = makeDiff($expected->$name, $current->$name);
+        $type = 'object';
+        $result = compact('name', 'children', 'type');
+    } elseif ($expected->$name === $current->$name) {
         $value = makeNode([$current->$name]);
-        $result = compact('name', 'value');
+        $type = 'nested';
+        $result = compact('name', 'value', 'type');
     } else {
         //update
         $currentValue = makeNode([$current->$name]);
-        $expectedValue = makeNode([$expeted->$name]);
-        $result = compact('name', 'currentValue', 'expectedValue');
+        $expectedValue = makeNode([$expected->$name]);
+        $type = 'updated';
+        $result = compact('name', 'currentValue', 'expectedValue', 'type');
     }
 
     return $result;
