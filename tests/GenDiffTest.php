@@ -6,28 +6,35 @@ use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
 
+function getFixturePath(string $fileName): string
+{
+    return implode(DIRECTORY_SEPARATOR, [__DIR__, "fixtures", $fileName]);
+}
+
 class GenDiffTest extends TestCase
 {
-    protected $files;
+    /**
+     * @dataProvider additionProvider
+     */
 
-    protected function setUp(): void
+    public function testGenDiff($pathToFile1, $pathToFile2, $format, $expected)
     {
-        $this->files = [
-            'json1' => 'tests/fixtures/file1.json',
-            'json2' => 'tests/fixtures/file2.json',
-            'yaml1' => 'tests/fixtures/file1.yaml',
-            'yaml2' => 'tests/fixtures/file2.yml'
-        ];
+        $pathToExpectedFixture = getFixturePath($expected);
+        $this->assertStringEqualsFile(
+            $pathToExpectedFixture,
+            genDiff(getFixturePath($pathToFile1), getFixturePath($pathToFile2), $format)
+        );
     }
 
-    public function testGenDiff()
+    public function additionProvider()
     {
-        $expected1 = file_get_contents('tests/fixtures/stylish.txt');
-        $expected2 = file_get_contents('tests/fixtures/plain.txt');
-        $expected3 = file_get_contents('tests/fixtures/json.txt');
-
-        $this->assertEquals($expected1, genDiff($this->files['json1'], $this->files['json2']));
-        $this->assertEquals($expected2, genDiff($this->files['yaml1'], $this->files['yaml2'], 'plain'));
-        $this->assertEquals($expected3, genDiff($this->files['yaml1'], $this->files['yaml2'], 'json'));
+        return [
+            ['file1.json', 'file2.json', 'stylish', 'stylish.txt'],
+            ['file1.json', 'file2.json', 'plain', 'plain.txt'],
+            ['file1.json', 'file2.json', 'json', 'json.txt'],
+            ['file1.yaml', 'file2.yml', 'stylish', 'stylish.txt'],
+            ['file1.yaml', 'file2.yml', 'plain', 'plain.txt'],
+            ['file1.yaml', 'file2.yml', 'json', 'json.txt']
+        ];
     }
 }

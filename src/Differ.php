@@ -18,7 +18,7 @@ function makeDiff(object $obj1, object $obj2): array
 {
     $keys1 = array_keys(get_object_vars($obj1));
     $keys2 = array_keys(get_object_vars($obj2));
-    $keys =  sortArrayValues(array_unique(array_merge($keys1, $keys2)));
+    $keys = sortArrayValues(array_unique(array_merge($keys1, $keys2)));
 
     return  array_map(
         fn ($key) => makeDiffNode($key, $obj1, $obj2),
@@ -28,19 +28,18 @@ function makeDiff(object $obj1, object $obj2): array
 
 function makeDiffNode(string $name, object $expected, object $current): array
 {
-    //add
     if (!property_exists($expected, $name)) {
         $currentValue = makeNode([$current->$name]);
         $type = 'added';
+
         return compact('name', 'currentValue', 'type');
     }
-    //delete
     if (!property_exists($current, $name)) {
         $expectedValue = makeNode([$expected->$name]);
         $type = 'deleted';
+
         return compact('name', 'expectedValue', 'type');
     }
-    //same
     if (is_object($expected->$name) && is_object($current->$name)) {
         $children = makeDiff($expected->$name, $current->$name);
         $type = 'object';
@@ -50,7 +49,6 @@ function makeDiffNode(string $name, object $expected, object $current): array
         $type = 'nested';
         $result = compact('name', 'value', 'type');
     } else {
-        //update
         $currentValue = makeNode([$current->$name]);
         $expectedValue = makeNode([$expected->$name]);
         $type = 'updated';
