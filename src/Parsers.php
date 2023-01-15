@@ -4,22 +4,19 @@ namespace Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse(string $path)
+function parse(string $content, string $type): object
 {
-    $content = file_get_contents($path);
-    if ($content === false) {
-        throw new \Exception("Error file reading {$path}");
-    }
-
-    $type = pathinfo($path, PATHINFO_EXTENSION);
-
     switch ($type) {
         case 'json':
-            return json_decode($content, false);
+            $parsingData = json_decode($content, false);
+            break;
         case 'yaml':
         case 'yml':
-            return Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
+            $parsingData = Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
+            break;
         default:
             throw new \Exception("Unknown file type {$type}");
     }
+
+    return $parsingData;
 }

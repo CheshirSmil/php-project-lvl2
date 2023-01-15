@@ -8,10 +8,23 @@ use function Functional\sort as f_sort;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
 {
-    $obj1 = parse($pathToFile1);
-    $obj2 = parse($pathToFile2);
+    $obj1 = readFile($pathToFile1);
+    $obj2 = readFile($pathToFile2);
 
     return format(makeDiff($obj1, $obj2), $format);
+}
+
+function readFile(string $path): object
+{
+    $content = file_get_contents($path);
+
+    if ($content === false) {
+        throw new \Exception("Error file reading {$path}");
+    }
+
+    $type = pathinfo($path, PATHINFO_EXTENSION);
+
+    return parse($content, $type);
 }
 
 function makeDiff(object $obj1, object $obj2): array
