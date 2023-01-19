@@ -2,8 +2,6 @@
 
 namespace Differ\Formatters;
 
-use function Differ\Formatters\{plain, stylish, json};
-
 function format(array $data, string $format): string
 {
     switch ($format) {
