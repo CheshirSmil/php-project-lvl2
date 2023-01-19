@@ -8,15 +8,11 @@ function parse(string $content, string $type): object
 {
     switch ($type) {
         case 'json':
-            $parsingData = json_decode($content, false);
-            break;
+            return json_decode($content, false);
         case 'yaml':
         case 'yml':
-            $parsingData = Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
-            break;
+            return Yaml::parse($content, Yaml::PARSE_OBJECT_FOR_MAP);
         default:
             throw new \Exception("Unknown file type {$type}");
     }
-
-    return $parsingData;
 }
