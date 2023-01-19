@@ -10,7 +10,7 @@ function format(array $data, string $format): string
         case 'plain':
             return plain($data);
         case 'json':
-            return  json($data);
+            return json($data);
         default:
             throw new \Exception("Unknown format");
     }
