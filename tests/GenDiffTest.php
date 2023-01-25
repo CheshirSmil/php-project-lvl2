@@ -32,8 +32,6 @@ class GenDiffTest extends TestCase
         $expectedPlain = $this->getFixturePath("plain.txt");
         $expectedJson = $this->getFixturePath("json.txt");
         $file1Json = $this->getFixturePath('file1.json');
-        $file2Json = $this->getFixturePath('file2.json');
-        $file1Yaml = $this->getFixturePath('file1.yaml');
         $file2Yml = $this->getFixturePath('file2.yml');
 
         return [
