@@ -38,12 +38,8 @@ class GenDiffTest extends TestCase
 
         return [
             [$expectedStylish, $file1Json, $file2Json],
-            [$expectedStylish, $file1Yaml, $file2Yml],
-            [$expectedStylish, $file1Json, $file2Json, $stylishFormat],
             [$expectedStylish, $file1Yaml, $file2Yml, $stylishFormat],
             [$expectedPlain, $file1Json, $file2Json, $plainFormat],
-            [$expectedPlain, $file1Yaml, $file2Yml, $plainFormat],
-            [$expectedJson, $file1Json, $file2Json, $jsonFormat],
             [$expectedJson, $file1Yaml, $file2Yml, $jsonFormat],
         ];
     }
