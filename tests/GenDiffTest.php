@@ -37,10 +37,10 @@ class GenDiffTest extends TestCase
         $file2Yml = $this->getFixturePath('file2.yml');
 
         return [
-            [$expectedStylish, $file1Json, $file2Json],
-            [$expectedStylish, $file1Yaml, $file2Yml, $stylishFormat],
-            [$expectedPlain, $file1Json, $file2Json, $plainFormat],
-            [$expectedJson, $file1Yaml, $file2Yml, $jsonFormat],
+            [$expectedStylish, $file1Json, $file2Yml],
+            [$expectedStylish, $file1Json, $file2Yml, $stylishFormat],
+            [$expectedPlain, $file1Json, $file2Yml, $plainFormat],
+            [$expectedJson, $file1Json, $file2Yml, $jsonFormat],
         ];
     }
 }
